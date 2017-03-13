@@ -1,0 +1,21 @@
+.location-place{
+    width: 700px;
+    height:500px;
+    margin: 100px auto;
+    background: #dcdcdc;
+    position: relative;
+}
+.location-bar-place{
+    width: 100px;
+    height: 30px;
+    padding-top: 5px;
+}
+.location-bar-place i{
+    width: 100px;
+    height: 30px;
+    font-size: 25px;
+    margin-left: 10px;
+}
+.location-place .follow{
+    position: absolute;
+}
