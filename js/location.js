@@ -10,7 +10,7 @@ var expectX; //点在图标内X的位置
 var expectY; //点在图标内Y的位置
 var noData; //位置信息状态传输
 var smallPlaceData; //图标狂位置信息状态传输
-var goBack;
+var goBack = 1;
 
 
 $(document).on('mousedown',".iconfont",function (e){
@@ -41,36 +41,45 @@ $(document).on('mousedown',".iconfont",function (e){
             }else{
                 if(0 > locationTop){
                     nowThis.css({"left":locationLeft,"top":0});
-                    $(document).unbind("mousemove");
+
                 }
                 if(locationTop > (boxHeight - 25)){
                     nowThis.css({"left":locationLeft,"top":(boxHeight - 25)});
-                    $(document).unbind("mousemove");
+
                 }
             }
         }else{
             if(-5 > locationLeft && 0 <= locationTop && locationTop <= (boxHeight - 25)){
                 nowThis.css({"left":-5,"top":locationTop});
-                $(document).unbind("mousemove");
+
             }
             if((boxWidth - 20) < locationLeft && 0 <= locationTop && locationTop <= (boxHeight - 25)){
                 nowThis.css({"left":(boxWidth - 20),"top":locationTop});
-                $(document).unbind("mousemove");
+
             }
         }
+
+        if((boxLeft<e.pageX  && e.pageY>boxTop+40) || (boxLeft+90 <e.pageX  && e.pageY>boxTop)){
+            goBack = goBack + 1;
+        }else{
+
+        }
+
         //移动出40*90的小框后自动生成 图标
         if((boxLeft<e.pageX  && e.pageY>boxTop+40 && noData==true) || (boxLeft+90 <e.pageX  && e.pageY>boxTop && noData==true)){
             if(nowThis.hasClass('icon-location')){
                 $('#locationBarPlace').append('<i class="iconfont icon-location"></i>');
+                console.log(nowThis)
             }else{
                 $('#locationBarPlace').prepend('<i id="technologyVidico" class="iconfont icon-icon-technology-vidicon"></i>');
+                console.log(nowThis)
             }
             noData = false;
-            goBack = true;
+
         }else{
-            goBack = false;
+
         }
-        
+
         $('#input').text(e.pageX+","+e.pageY+","+boxWidth+",");
 
 
@@ -86,17 +95,21 @@ $(document).on('mousedown',".iconfont",function (e){
                 //删除点位置
                 nowThis.remove();
             }else{
-                if(goBack == false){
+                if(goBack > 1){
                     nowThis.remove();
+
                 }else{
+                    // nowThis.remove();
                     nowThis.removeClass('follow')
                 }
+
             }
 
         }
         // return moveState;
         //移动出40*90的小框后自动生成 图标
         $(document).unbind("mousemove");
+        goBack = 1;
     });
 });
 
