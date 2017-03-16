@@ -10,7 +10,7 @@ body{
     position: relative;
 }
 .location-place i{
-    font-size: 25px;
+    font-size: 24px;
     animation:mymove 1s ease;
     -webkit-animation:mymove 1s ease; /*Safari and Chrome*/
 }
@@ -41,4 +41,63 @@ body{
 }
 .location-place .follow{
     position: absolute;
+    z-index: 100;
+}
+.follow:after{
+    content: '';
+    position: absolute;
+    z-index: -10;
+    /*left: 20px;*/
+    width: 70px;
+    height: 30px;
+    left: -23px;
+    top: 9px;
+    background: #ffffff;
+    opacity: 0.5;
+    border-radius: 50%;
+    animation:mymovecircle 4s ease infinite;
+    -webkit-animation:mymovecircle 4s ease infinite; /*Safari and Chrome*/
+}
+@keyframes mymovecircle
+{
+    0% {
+        left: -23px;
+        top: 9px;
+        width: 70px;
+        height: 30px;
+    }
+    50%{
+        left: -16px;
+        top: 12px;
+        width: 56px;
+        height: 24px;
+    }
+    100% {
+        left: -23px;
+        top: 9px;
+        width: 70px;
+        height: 30px;
+    }
+}
+
+@-webkit-keyframes mymovecircle /*Safari and Chrome*/
+{
+    0% {
+        left: -23px;
+        top: 9px;
+        width: 70px;
+        height: 30px;
+    }
+    50%{
+        left: -16px;
+        top: 12px;
+        width: 56px;
+        height: 24px;
+    }
+    100% {
+        left: -23px;
+        top: 9px;
+        width: 70px;
+        height: 30px;
+    }
 }
