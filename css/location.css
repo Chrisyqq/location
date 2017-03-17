@@ -41,7 +41,7 @@ body{
 }
 .location-place .follow{
     position: absolute;
-    z-index: 100;
+    z-index: 10;
 }
 .follow:after{
     content: '';
@@ -111,4 +111,60 @@ body{
     position: absolute;
     background: #ffffff;
     border-radius: 10px;
+    animation:movemessage 1s ease;
+    -webkit-animation:movemessage 1s ease; /*Safari and Chrome*/
+}
+@keyframes movemessage
+{
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes movemessage /*Safari and Chrome*/
+{
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.right-information{
+    position: absolute;
+    z-index: 1000 !important;
+    display: none;
+    right: -200px;
+    width: 200px;
+    height: 100px;
+    animation:rightinformation 1s ease;
+    -webkit-animation:rightinformation 1s ease; /*Safari and Chrome*/
+    top: 0;
+}
+@keyframes rightinformation
+{
+    0% {
+        opacity: 0;
+        right: -210px;
+    }
+    100% {
+        opacity: 1;
+        right: -200px;
+    }
+}
+
+@-webkit-keyframes rightinformation /*Safari and Chrome*/
+{
+    0% {
+        opacity: 0;
+        right: -210px;
+    }
+    100% {
+        opacity: 1;
+        right: -200px;
+    }
 }

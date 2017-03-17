@@ -17,6 +17,7 @@ var pointData;
 
 
 $(document).on('mousedown',".iconfont",function (e){
+    $('.right-information').css({'display':'block'});
     if(e.which==1){
         var nowThis = $(this);
 
@@ -141,10 +142,24 @@ $(document).on('mousedown',".iconfont",function (e){
 $('#locationPlace').on('contextmenu',function(e){
     e.preventDefault();
 });
+
+$('#locationPlace').on('mousedown',function(e){
+    $('.follow-message').css({'display':'none'});
+    e.preventDefault();
+});
 $(document).on('mousedown',".follow",function (e){
+    $('.follow-message').css({'display':'none'});
     if(e.which==3){
+        var x=parseInt($(this).css('left').substring(0,$(this).css('left').length-2))+40+"px";
+        var y=parseInt($(this).css('top').substring(0,$(this).css('top').length-2))-40+"px";
+        console.log(x,y)
         $('.follow-message').html('<p>'+$(this).attr('x')+'</p><p>'+$(this).attr('y')+'</p><p>'+$(this).attr('id')+'</p>');
-        $('.follow-message').css({'left': $(this).css('left'),'top': $(this).css('top')});
+        $('.follow-message').css({'left': x,'top': y,'display':'block'});
+        $('.follow-message').animate({
+            left:'+=10px',
+            display:'block'
+        });
+        $('.right-information').css({'display':'block'});
         e.preventDefault();
     }
 });
