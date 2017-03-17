@@ -101,3 +101,14 @@ body{
         height: 30px;
     }
 }
+.follow-message{
+    width: 100px;
+    height: 100px;
+    display: none;
+    clear: both;
+    padding: 12px;
+    line-height: 16px;
+    position: absolute;
+    background: #ffffff;
+    border-radius: 10px;
+}
