@@ -114,6 +114,16 @@ body{
     animation:movemessage 1s ease;
     -webkit-animation:movemessage 1s ease; /*Safari and Chrome*/
 }
+.follow-message-left{
+    position: absolute;
+    top: 40px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-right: 10px solid #ffffff;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
 @keyframes movemessage
 {
     0% {

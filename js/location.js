@@ -11,10 +11,22 @@ var expectY; //点在图标内Y的位置
 var noData; //移动过程中 添加事件一直执行  创造此数据 为了移动的时候只执行一次
 var smallPlaceData; //图标狂位置信息状态传输
 var goBack = 1;
-var idLocation = 1;
-var idVidicon = 1;
-var pointData;
+var pointData = [{name:'0',x:'50px',y:'50px',style:'vidicon'},{name:'1',x:'80px',y:'80px',style:'location'}];
+var thisData=new Array;
+var idLocation = pointData.length;
 
+$(function () {
+    console.log(pointData[0]);
+    for(var i = 0; i <idLocation; i ++){
+        for(var i in pointData){
+            if(pointData[i].style=="location"){
+                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-icon-technology-vidicon follow" style="left:' + pointData[i].x + ';top:' + pointData[i].y + ';"></i>');
+            }else{
+                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-location follow" style="left:' + pointData[i].x + ';top:' + pointData[i].y + ';"></i>');
+            }
+        }
+    }
+});
 
 $(document).on('mousedown',".iconfont",function (e){
     $('.right-information').css({'display':'block'});
@@ -64,13 +76,7 @@ $(document).on('mousedown',".iconfont",function (e){
                     if(locationTop > (boxHeight - 25)){
                         nowThis.css({"left":locationLeft,"top":(boxHeight - 25)});
                     }
-                    //
                     $(document).unbind("mousemove");
-                    if(goBack>1){
-                        nowThis.remove();
-                    }else{
-                        nowThis.removeClass('follow');
-                    }
                 }
             }else{
                 if(-5 > locationLeft && 0 <= locationTop && locationTop <= (boxHeight - 25)){
@@ -80,23 +86,30 @@ $(document).on('mousedown',".iconfont",function (e){
                     nowThis.css({"left":(boxWidth - 20),"top":locationTop});
                 }
                 $(document).unbind("mousemove");
-                if(goBack>1){
-                    nowThis.remove();
-                }else{
-                    nowThis.removeClass('follow');
-                }
             }
 
             //移动出40*90的小框后自动生成 图标
             if((boxLeft<e.pageX  && e.pageY>boxTop+40 && noData==true) || (boxLeft+60 <e.pageX  && e.pageY>boxTop && noData==true)){
-                if(nowThis.hasClass('icon-location')){
-                    idLocation = idLocation+1;
-                    $('#locationBarPlace').append('<i id="'+ "location" + idLocation +'" class="iconfont icon-location"></i>');
-                    noData = false;
-                }else{
-                    idVidicon = idVidicon+1;
-                    $('#locationBarPlace').prepend('<i id="'+ "vidicon" + idVidicon +'" class="iconfont icon-icon-technology-vidicon"></i>');
-                    noData = false;
+                var allponit = $('.iconfont').length;
+                var addpoint= $('.follow').length;
+                if(allponit-addpoint<2){
+                    if(nowThis.hasClass('icon-location')){
+                        nowThis.attr('id',idLocation);
+                        thisData = '{"name":"' + idLocation +'","x":"' + locationLeft +'","y":"' + locationTop +'","style":"location"}';
+                        pointData.push(JSON.parse(thisData));
+                        console.log(pointData);
+                        idLocation = idLocation + 1;
+                        $('#locationBarPlace').append('<i id="' + idLocation +'" class="iconfont icon-location"></i>');
+                        noData = false;
+                    }else{
+                        nowThis.attr('id',idLocation);
+                        thisData = '{"name":"' + idLocation +'","x":"' + locationLeft +'","y":"' + locationTop +'","style":"vidicon"}';
+                        pointData.push(JSON.parse(thisData));
+                        console.log(pointData);
+                        idLocation = idLocation + 1;
+                        $('#locationBarPlace').prepend('<i id="' + idLocation +'" class="iconfont icon-icon-technology-vidicon"></i>');
+                        noData = false;
+                    }
                 }
             }else{
 
@@ -114,19 +127,30 @@ $(document).on('mousedown',".iconfont",function (e){
         });
         //移动结束清除移动
         nowThis.mouseup(function (e) {
+
             if((boxLeft<e.pageX  && e.pageY>boxTop+40) || (boxLeft+60 <e.pageX  && e.pageY>boxTop)){
 
             }else{
                 if (smallPlaceData==false){
                     //删除点位置
+                    delete pointData[nowThis.attr('id')];
+                    console.log(pointData);
                     nowThis.remove();
+
                 }else{
                     if(goBack > 1){
                         //删除点位置 移动出之后再回来
+                        delete pointData[nowThis.attr('id')];
+                        console.log(pointData);
                         nowThis.remove();
                     }else{
                         // nowThis.remove();
-                        nowThis.removeClass('follow')
+                        var allponit = $('.iconfont').length;
+                        var addpoint= $('.follow').length;
+                        if(allponit-addpoint<2){
+                            nowThis.removeClass('follow');
+                        }
+
                     }
 
                 }
@@ -143,22 +167,25 @@ $('#locationPlace').on('contextmenu',function(e){
     e.preventDefault();
 });
 
+//
 $('#locationPlace').on('mousedown',function(e){
     $('.follow-message').css({'display':'none'});
     e.preventDefault();
 });
+
+//右键显示数据
 $(document).on('mousedown',".follow",function (e){
     $('.follow-message').css({'display':'none'});
     if(e.which==3){
         var x=parseInt($(this).css('left').substring(0,$(this).css('left').length-2))+40+"px";
         var y=parseInt($(this).css('top').substring(0,$(this).css('top').length-2))-40+"px";
-        console.log(x,y)
-        $('.follow-message').html('<p>'+$(this).attr('x')+'</p><p>'+$(this).attr('y')+'</p><p>'+$(this).attr('id')+'</p>');
+        $('.follow-message').html('<p>'+$(this).attr('x')+'</p><p>'+$(this).attr('y')+'</p><p>'+$(this).attr('id')+'</p><div class="follow-message-left"></div>');
         $('.follow-message').css({'left': x,'top': y,'display':'block'});
         $('.follow-message').animate({
             left:'+=10px',
             display:'block'
         });
+
         $('.right-information').css({'display':'block'});
         e.preventDefault();
     }
