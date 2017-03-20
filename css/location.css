@@ -109,8 +109,9 @@ body{
     padding: 12px;
     line-height: 16px;
     position: absolute;
-    background: #ffffff;
+    background: rgba(255,255,255,0.6);
     border-radius: 10px;
+    z-index: 1000;
     animation:movemessage 1s ease;
     -webkit-animation:movemessage 1s ease; /*Safari and Chrome*/
 }
@@ -120,7 +121,7 @@ body{
     left: -10px;
     width: 0;
     height: 0;
-    border-right: 10px solid #ffffff;
+    border-right: 10px solid rgba(255,255,255,0.6);
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
 }

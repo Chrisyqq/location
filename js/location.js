@@ -55,7 +55,7 @@ $(document).on('mousedown',".iconfont",function (e){
         nowThis.css({"left":e.pageX - boxLeft - expectX + "px","top":e.pageY - boxTop - expectY + "px"});
         //开始移动 && 靠边平滑处理
         $(document).mousemove(function (e) {
-            nowThis.addClass('follow');
+
             var locationLeft = e.pageX - boxLeft - expectX;
             var locationTop = e.pageY - boxTop - expectY;
 
@@ -90,6 +90,7 @@ $(document).on('mousedown',".iconfont",function (e){
 
             //移动出40*90的小框后自动生成 图标
             if((boxLeft<e.pageX  && e.pageY>boxTop+40 && noData==true) || (boxLeft+60 <e.pageX  && e.pageY>boxTop && noData==true)){
+                nowThis.addClass('follow');
                 var allponit = $('.iconfont').length;
                 var addpoint= $('.follow').length;
                 if(allponit-addpoint<2){
@@ -144,7 +145,7 @@ $(document).on('mousedown',".iconfont",function (e){
                         console.log(pointData);
                         nowThis.remove();
                     }else{
-                        // nowThis.remove();
+                        // 图标移动回去之后
                         var allponit = $('.iconfont').length;
                         var addpoint= $('.follow').length;
                         if(allponit-addpoint<2){
