@@ -9,6 +9,7 @@ body{
     background: #dcdcdc;
     position: relative;
 }
+
 .location-place i{
     font-size: 24px;
     animation:mymove 1s ease;
@@ -38,6 +39,20 @@ body{
     height: 30px;
     padding-top: 10px;
     padding-left: 10px;
+}
+.point-delete{
+    width: 90px;
+    height: 40px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+    color: #ffffff;
+    font-size: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: red;
+    display: none;
 }
 .location-place .follow{
     position: absolute;
@@ -98,11 +113,12 @@ body{
     /*}*/
 /*}*/
 .follow-message{
-    width: 100px;
-    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
     display: none;
     clear: both;
     padding: 12px;
+    text-align: left;
     line-height: 16px;
     position: absolute;
     background: rgba(255,255,255,0.6);

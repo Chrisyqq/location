@@ -19,14 +19,14 @@ $(function () {
     for(var i = 0; i <idLocation; i ++){
         for(var i in pointData){
             if(pointData[i].style=="location"){
-                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-icon-technology-vidicon follow' + ' action' + pointData[i].name + '"' +
+                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" circlearea="'+ pointData[i].circlearea +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-icon-technology-vidicon follow' + ' action' + pointData[i].name + '"' +
                     'style="left:' + pointData[i].x + ';top:' + pointData[i].y + ';"></i>');
-                console.log(circleArea(pointData[i].name,pointData[i].circlearea));
+                // console.log(circleArea(pointData[i].name,pointData[i].circlearea));
                 $('#head').append(circleArea(pointData[i].name,pointData[i].circlearea));
             }else{
-                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-location follow' + ' action' + pointData[i].name + '" ' +
+                $('#locationBarPlace').prepend('<i id="' + pointData[i].name +'" circlearea="'+ pointData[i].circlearea +'" x="' + pointData[i].x + '" y="' + pointData[i].y + '" class="iconfont icon-location follow' + ' action' + pointData[i].name + '" ' +
                     'style="left:' + pointData[i].x + ';top:' + pointData[i].y + ';"></i>');
-                console.log(circleArea(pointData[i].name,pointData[i].circlearea));
+                // console.log(circleArea(pointData[i].name,pointData[i].circlearea));
                 $('#head').append(circleArea(pointData[i].name,pointData[i].circlearea));
             }
         }
@@ -44,9 +44,10 @@ $(document).on('mousedown',".iconfont",function (e){
         noData = true;
 
         //实时显示位置信息
-        $('#input').find('input').eq(0).attr('value',nowThis.css('left'));
-        $('#input').find('input').eq(1).attr('value',nowThis.css('top'));
+        $('#input').find('input').eq(0).attr('value',nowThis.css('left').substring(0,nowThis.css('left').length-2));
+        $('#input').find('input').eq(1).attr('value',nowThis.css('top').substring(0,nowThis.css('top').length-2));
         $('#input').find('input').eq(2).attr('value',nowThis.attr('id'));
+        $('#input').find('input').eq(3).attr('value',nowThis.attr('circlearea'));
         //除了标签栏位置
         if((boxLeft<e.pageX  && e.pageY>boxTop+40 && noData==true) || (boxLeft+60 <e.pageX  && e.pageY>boxTop && noData==true)){
             noData = false;//
@@ -93,6 +94,18 @@ $(document).on('mousedown',".iconfont",function (e){
                 $(document).unbind("mousemove");
             }
 
+            nowThis.mousemove(function (e) {
+                if((boxLeft<e.pageX  && e.pageY>boxTop+40) || (boxLeft+60 <e.pageX  && e.pageY>boxTop)){
+                    $('.point-delete').css('display','none');
+                }else{
+                    if(nowThis.hasClass('follow')){
+                        $('.point-delete').css('display','block');
+                    }
+
+                }
+
+            });
+
             //移动出40*90的小框后自动生成 图标
             if((boxLeft<e.pageX  && e.pageY>boxTop+40 && noData==true) || (boxLeft+60 <e.pageX  && e.pageY>boxTop && noData==true)){
                 nowThis.addClass('follow');
@@ -105,9 +118,9 @@ $(document).on('mousedown',".iconfont",function (e){
                         $('#head').append(circleArea(idLocation,60));
                         thisData = '{"name":"' + idLocation +'","x":"' + locationLeft +'","y":"' + locationTop +'","style":"location","circlearea":"60"}';
                         pointData.push(JSON.parse(thisData));
-                        console.log(pointData);
+                        // console.log(pointData);
                         idLocation = idLocation + 1;
-                        $('#locationBarPlace').append('<i id="' + idLocation +'" class="iconfont icon-location"></i>');
+                        $('#locationBarPlace').append('<i id="' + idLocation +'" circlearea="60" class="iconfont icon-location"></i>');
                         noData = false;
                     }else{
                         nowThis.attr('id',idLocation);
@@ -115,9 +128,9 @@ $(document).on('mousedown',".iconfont",function (e){
                         $('#head').append(circleArea(idLocation,60));
                         thisData = '{"name":"' + idLocation +'","x":"' + locationLeft +'","y":"' + locationTop +'","style":"vidicon","circlearea":"60"}';
                         pointData.push(JSON.parse(thisData));
-                        console.log(pointData);
+                        // console.log(pointData);
                         idLocation = idLocation + 1;
-                        $('#locationBarPlace').prepend('<i id="' + idLocation +'" class="iconfont icon-icon-technology-vidicon"></i>');
+                        $('#locationBarPlace').prepend('<i id="' + idLocation +'" circlearea="60" class="iconfont icon-icon-technology-vidicon"></i>');
                         noData = false;
                     }
                 }
@@ -127,12 +140,12 @@ $(document).on('mousedown',".iconfont",function (e){
 
             nowThis.attr('x',nowThis.css('left'));
             nowThis.attr('y',nowThis.css('left'));
-            $('#input').find('input').eq(2).attr('value',nowThis.attr('id'));
 
             //实时显示位置信息
-            $('#input').find('input').eq(0).attr('value',nowThis.css('left'));
-            $('#input').find('input').eq(1).attr('value',nowThis.css('top'));
+            $('#input').find('input').eq(0).attr('value',nowThis.css('left').substring(0,nowThis.css('left').length-2));
+            $('#input').find('input').eq(1).attr('value',nowThis.css('top').substring(0,nowThis.css('top').length-2));
             $('#input').find('input').eq(2).attr('value',nowThis.attr('id'));
+            $('#input').find('input').eq(3).attr('value',nowThis.attr('circlearea'));
 
         });
         //移动结束清除移动
@@ -143,16 +156,39 @@ $(document).on('mousedown',".iconfont",function (e){
             }else{
                 if (smallPlaceData==false){
                     //删除点位置
-                    delete pointData[nowThis.attr('id')];
+                    for (var i=0;i<pointData.length;i++){
+                        if(pointData[i]==null){
+
+                        }else{
+                            if(pointData[i].name==nowThis.attr('id')){
+                                pointData[i]=null;
+                            }
+                        }
+
+                    }
+                    //delete pointData[nowThis.attr('id')];
                     console.log(pointData);
                     nowThis.remove();
-
+                    $('.point-delete').css('display','none');
+                    $('#action'+nowThis.attr('id')).remove();
                 }else{
                     if(goBack > 1){
                         //删除点位置 移动出之后再回来
-                        delete pointData[nowThis.attr('id')];
+                        for (var i=0;i<pointData.length;i++){
+                            if(pointData[i]==null){
+
+                            }else{
+                                if(pointData[i].name==nowThis.attr('id')){
+                                    pointData[i]=null;
+                                }
+                            }
+
+                        }
+                        // delete pointData[nowThis.attr('id')];
                         console.log(pointData);
                         nowThis.remove();
+                        $('.point-delete').css('display','none');
+                        $('#action'+nowThis.attr('id')).remove();
                     }else{
                         // 图标移动回去之后
                         var allponit = $('.iconfont').length;
@@ -185,11 +221,15 @@ $('#locationPlace').on('mousedown',function(e){
 
 //右键显示数据
 $(document).on('mousedown',".follow",function (e){
+    $('#input').find('input').eq(0).attr('value',$(this).css('left').substring(0,$(this).css('left').length-2));
+    $('#input').find('input').eq(1).attr('value',$(this).css('top').substring(0,$(this).css('top').length-2));
+    $('#input').find('input').eq(2).attr('value',$(this).attr('id'));
+    $('#input').find('input').eq(3).attr('value',$(this).attr('circlearea'));
     $('.follow-message').css({'display':'none'});
     if(e.which==3){
         var x=parseInt($(this).css('left').substring(0,$(this).css('left').length-2))+40+"px";
         var y=parseInt($(this).css('top').substring(0,$(this).css('top').length-2))-40+"px";
-        $('.follow-message').html('<p>'+$(this).attr('x')+'</p><p>'+$(this).attr('y')+'</p><p>'+$(this).attr('id')+'</p><p>'+$(this).attr('id')+'</p><div class="follow-message-left"></div>');
+        $('.follow-message').html('<p>X轴坐标: '+$(this).attr('x').substring(0,$(this).attr('x').length-2)+'</p><p>Y轴坐标: '+$(this).attr('y').substring(0,$(this).attr('y').length-2)+'</p><p>ID编号: '+$(this).attr('id')+'</p><p>半径: '+$(this).attr('circlearea')+'</p><div class="follow-message-left"></div>');
         $('.follow-message').css({'left': x,'top': y,'display':'block'});
         $('.follow-message').animate({
             left:'+=10px',
@@ -215,32 +255,58 @@ $(document).on('mousedown',".follow",function (e){
             '-webkit-animation:mymovecircle' + id +' ease 3s infinite;' +
         '}'+
         "@keyframes mymovecircle" + id +'{' +
-            '0% {left: -' + (diameter/2-12) + 'px' + ';top: -' + (diameter/2-24) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
-            '50% {left: -' + (diameter/2-17) + 'px' + ';top: -' + (diameter/2-29) + 'px;'+'width: ' + (diameter-10) +'px;'+'height: ' + (diameter-10) + 'px' +';}' +
-            '100% {left: -' + (diameter/2-12) + 'px' + ';top: -' + (diameter/2-24) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
+            '0% {left: '+ (12-diameter/2) + 'px' + ';top: '+ (24-diameter/2) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
+            '50% {left: '+ (17-diameter/2) + 'px' + ';top: '+ (29-diameter/2) + 'px;'+'width: ' + (diameter-10) +'px;'+'height: ' + (diameter-10) + 'px' +';}' +
+            '100% {left: '+ (12-diameter/2) + 'px' + ';top: '+ (24-diameter/2) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
         '}' +
         '@-webkit-keyframes mymovecircle' + id +'{' +
-            '0% {left: -' + (diameter/2-12) + 'px' + ';top: -' + (diameter/2-24) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
-            '50% {left: -' + (diameter/2-17) + 'px' + ';top: -' + (diameter/2-29) + 'px;'+'width: ' + (diameter-10) +'px;'+'height: ' + (diameter-10) + 'px' +';}' +
-            '100% {left: -' + (diameter/2-12) + 'px' + ';top: -' + (diameter/2-24) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
+            '0% {left: '+ (12-diameter/2) + 'px' + ';top: '+ (24-diameter/2) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
+            '50% {left: '+ (17-diameter/2) + 'px' + ';top: '+ (29-diameter/2) + 'px;'+'width: ' + (diameter-10) +'px;'+'height: ' + (diameter-10) + 'px' +';}' +
+            '100% {left: '+ (12-diameter/2) + 'px' + ';top: '+ (24-diameter/2) + 'px;'+'width: ' + diameter +'px;'+'height: ' + diameter + 'px' +';}' +
         '}' +
         '</style>';
     return style;
 };
 
 $('#changePoint').click(function () {
+    var diameter = $('#input').find('input').eq(3).val();
     if($('#input').find('input').eq(3).val()=='' || $('#input').find('input').eq(3).val()=='请输入大小'){
         $('#input').find('input').eq(3).val('请输入大小')
-    }else{
-        var id = $('#input').find('input').eq(2).attr('value');
-        var diameter = $('#input').find('input').eq(3).val();
-        $('#action'+id).remove();
-        for (var i=0;i<pointData.length;i++){
-            if(pointData[i].name==id){
-                pointData[i].circlearea=diameter;
+    }else if (!isNaN(diameter)){
+        if(10<=diameter && diameter<=300){
+            var id = $('#input').find('input').eq(2).attr('value');
+            //head标签栏里去除旧样式
+            $('#action'+id).remove();
+
+            //更改对应的 定位 circlearea的值
+            $('#'+id).attr('circlearea',diameter);
+
+            //
+            if($('.follow-message').css('display')=='block'){
+                $('.follow-message').find('p').eq(3).text('半径: '+diameter)
             }
+            console.log(pointData.length);
+
+            //遍历 数组 替换circlearea的值
+            for (var i=0;i<pointData.length+1;i++){
+                if(pointData[i]==null){
+
+                }else{
+                    console.log(pointData[i]);
+                    if(pointData[i].name == id){
+                        pointData[i].circlearea=diameter;
+                    }
+                }
+            }
+            //head标签栏里增加相应的新样式
+            $('#head').append(circleArea(id,diameter));
+        }else if (diameter<10){
+            $('#input').find('input').eq(3).val('输入值太小')
+        }else{
+            $('#input').find('input').eq(3).val('输入值太大')
         }
-        $('#head').append(circleArea(id,diameter));
+    }else{
+        $('#input').find('input').eq(3).val('请输入数字')
     }
 
 });
