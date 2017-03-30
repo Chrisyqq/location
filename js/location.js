@@ -204,6 +204,7 @@ $(document).on('mousedown',".iconfont",function (e){
             }
             $(document).unbind("mousemove");
             goBack = 1;
+            console.log(thisData);
         });
     }
 
